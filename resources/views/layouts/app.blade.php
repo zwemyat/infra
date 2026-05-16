@@ -556,6 +556,21 @@
         [data-bs-theme="dark"] .app-breadcrumb-item.is-current span { color: #f1f5f9; }
         [data-bs-theme="dark"] .app-breadcrumb-sep { color: #475569; }
 
+        /* ─── Status badge ───────────────────────────────────────────────── */
+        /* Centralized look for badges rendered via partials/_status_badge.
+           The icon glyph is purely presentational — aria-hidden via the
+           partial markup — and gives colorblind users a redundant signal. */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            white-space: nowrap;
+        }
+        .status-badge-icon {
+            font-size: .85em;
+            line-height: 1;
+        }
+
         /* ─── Tooltips ───────────────────────────────────────────────────── */
         .tooltip {
             --bs-tooltip-bg: rgba(15, 23, 42, 0.95);
