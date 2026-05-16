@@ -1,22 +1,11 @@
 @extends('layouts.app')
 @section('title', $asset->computer_id)
 @section('content')
-@php
-    $statusTone = match($asset->status) {
-        'Active'          => 'success',
-        'Free'            => 'info',
-        'Damage'          => 'danger',
-        'Retirement'      => 'secondary',
-        'Low Performance' => 'warning',
-        default           => 'secondary',
-    };
-@endphp
-
 <div class="page-header">
     <div>
         <h1 class="page-title">{{ $asset->computer_id }}</h1>
         <div class="page-subtitle">
-            <span class="badge bg-{{ $statusTone }}-subtle text-{{ $statusTone }}-emphasis me-1">{{ $asset->status }}</span>
+            @include('partials._status_badge', ['status' => $asset->status, 'class' => 'me-1'])
             {{ $asset->hostname }}
             @if($asset->employee_name) &middot; assigned to {{ $asset->employee_name }} @endif
         </div>

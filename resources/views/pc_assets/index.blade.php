@@ -293,15 +293,7 @@
                                 <td>{{ $asset->hostname }}</td>
                                 <td>{{ $asset->employee_name ?: '—' }}</td>
                                 <td>
-                                    @php $tone = match($asset->status) {
-                                        'Active'          => 'success',
-                                        'Free'            => 'info',
-                                        'Damage'          => 'danger',
-                                        'Retirement'      => 'secondary',
-                                        'Low Performance' => 'warning',
-                                        default           => 'secondary',
-                                    }; @endphp
-                                    <span class="badge bg-{{ $tone }}-subtle text-{{ $tone }}-emphasis">{{ $asset->status }}</span>
+                                    @include('partials._status_badge', ['status' => $asset->status])
                                 </td>
                                 <td>{{ $asset->department ?: '—' }}</td>
                                 <td>

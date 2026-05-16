@@ -277,13 +277,6 @@
                                 $today = \Carbon\Carbon::today();
                                 $days = (int) $today->diffInDays($item->expire_date, false);
                                 $isOverdue = $days < 0 && !in_array($item->status, ['Terminated']);
-                                $statusTone = match($item->status) {
-                                    'Active'     => 'success',
-                                    'Pending'    => 'warning',
-                                    'Expired'    => 'danger',
-                                    'Terminated' => 'secondary',
-                                    default      => 'secondary',
-                                };
 
                                 $prev = $item->previous_cost !== null ? (float) $item->previous_cost : null;
                                 $curr = $item->renewal_cost  !== null ? (float) $item->renewal_cost  : null;
@@ -313,7 +306,7 @@
                                         <div class="text-muted small text-truncate" style="max-width: 280px;" title="{{ $item->remarks }}">{{ $item->remarks }}</div>
                                     @endif
                                 </td>
-                                <td><span class="badge bg-{{ $statusTone }}-subtle text-{{ $statusTone }}-emphasis">{{ $item->status }}</span></td>
+                                <td>@include('partials._status_badge', ['status' => $item->status])</td>
                                 <td>{{ $item->vendor_name ?: '—' }}</td>
                                 <td>
                                     @if($item->license_info)

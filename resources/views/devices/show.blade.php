@@ -1,22 +1,11 @@
 @extends('layouts.app')
 @section('title', $device->item_name)
 @section('content')
-@php
-    $statusTone = match($device->status) {
-        'Active'     => 'success',
-        'Free'       => 'info',
-        'Damage'     => 'danger',
-        'Retirement' => 'secondary',
-        'Lost'       => 'warning',
-        default      => 'secondary',
-    };
-@endphp
-
 <div class="page-header">
     <div>
         <h1 class="page-title">{{ $device->item_name }}</h1>
         <div class="page-subtitle">
-            <span class="badge bg-{{ $statusTone }}-subtle text-{{ $statusTone }}-emphasis me-1">{{ $device->status }}</span>
+            @include('partials._status_badge', ['status' => $device->status, 'class' => 'me-1'])
             @if($device->serial_number) <code class="small">{{ $device->serial_number }}</code> @endif
             @if($device->qty > 1) &middot; Qty: <strong>{{ $device->qty }}</strong> @endif
             @if($device->location) &middot; {{ $device->location }} @endif

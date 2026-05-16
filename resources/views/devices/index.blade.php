@@ -304,15 +304,7 @@
                                 <td>{{ $device->location ?: '—' }}</td>
                                 <td class="text-end fw-semibold">{{ $device->qty }}</td>
                                 <td>
-                                    @php $tone = match($device->status) {
-                                        'Active'     => 'success',
-                                        'Free'       => 'info',
-                                        'Damage'     => 'danger',
-                                        'Retirement' => 'secondary',
-                                        'Lost'       => 'warning',
-                                        default      => 'secondary',
-                                    }; @endphp
-                                    <span class="badge bg-{{ $tone }}-subtle text-{{ $tone }}-emphasis">{{ $device->status }}</span>
+                                    @include('partials._status_badge', ['status' => $device->status])
                                 </td>
                                 <td>{{ $device->vendor ?: '—' }}</td>
                                 <td class="text-muted small">{{ $device->purchased_date?->format('Y-m-d') ?? '—' }}</td>

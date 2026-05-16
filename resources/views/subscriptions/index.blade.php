@@ -288,14 +288,6 @@
                                 $days = (int) \Carbon\Carbon::today()->diffInDays($sub->expire_date, false);
                                 $daysTone = $sub->renewal_status === 'Renewed' ? 'success' :
                                     ($days < 0 ? 'danger' : ($days <= 7 ? 'danger' : ($days <= 30 ? 'warning' : 'secondary')));
-                                $rsBadge = match($sub->renewal_status) {
-                                    'Renewed'   => 'success',
-                                    'Pending'   => 'warning',
-                                    'Expired'   => 'danger',
-                                    'Cancelled' => 'secondary',
-                                    default     => 'secondary',
-                                };
-                                $statusTone = $sub->status === 'Active' ? 'success' : 'secondary';
 
                                 $prev = $sub->previous_cost !== null ? (float) $sub->previous_cost : null;
                                 $curr = $sub->renewal_cost  !== null ? (float) $sub->renewal_cost  : null;
@@ -323,7 +315,7 @@
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="badge bg-info-subtle text-info-emphasis">{{ $sub->service_type }}</span>
                                         @if($sub->status !== 'Active')
-                                            <span class="badge bg-{{ $statusTone }}-subtle text-{{ $statusTone }}-emphasis" title="Subscription is {{ $sub->status }}">{{ $sub->status }}</span>
+                                            @include('partials._status_badge', ['status' => $sub->status])
                                         @endif
                                     </div>
                                     <div class="fw-semibold mt-1">{{ $sub->subscription_name }}</div>
@@ -363,7 +355,7 @@
                                         <span class="text-muted small">—</span>
                                     @endif
                                 </td>
-                                <td><span class="badge bg-{{ $rsBadge }}-subtle text-{{ $rsBadge }}-emphasis">{{ $sub->renewal_status }}</span></td>
+                                <td>@include('partials._status_badge', ['status' => $sub->renewal_status])</td>
                                 <td class="text-end text-nowrap pe-3">
                                     @if($sub->renewal_status !== 'Renewed' && $isAdmin)
                                     <button type="button" class="btn-icon-soft sub-mark-renewed text-success"
