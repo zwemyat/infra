@@ -18,48 +18,57 @@ class DashboardController extends Controller
         $today = Carbon::today();
         $in30Days = $today->copy()->addDays(30);
 
-        $expiringSubsCount = Subscription::where('status', 'Active')
-            ->where('renewal_status', '!=', 'Renewed')
-            ->whereBetween('expire_date', [$today, $in30Days])
-            ->count();
-
-        $expiringLicensesCount = LicenseContract::whereNotIn('status', ['Terminated', 'Expired'])
-            ->whereBetween('expire_date', [$today, $in30Days])
-            ->count();
-
-        $stats = [
-            'total_assets'         => PcAsset::count(),
-            'active_assets'        => PcAsset::where('status', 'Active')->count(),
-            'free_assets'          => PcAsset::where('status', 'Free')->count(),
-
-            'total_devices'        => Device::count(),
-            'devices_qty'          => (int) Device::sum('qty'),
-            'active_devices'       => Device::where('status', 'Active')->count(),
-            'active_units'         => (int) Device::where('status', 'Active')->sum('qty'),
-
-            'total_subscriptions'  => Subscription::count(),
-            'active_subscriptions' => Subscription::where('status', 'Active')->count(),
-
-            'total_licenses'       => LicenseContract::count(),
-            'active_licenses'      => LicenseContract::where('status', 'Active')->count(),
-
-            'expiring_subs'        => $expiringSubsCount,
-            'expiring_licenses'    => $expiringLicensesCount,
-            'expiring_total'       => $expiringSubsCount + $expiringLicensesCount,
-
-            'expired_subs'         => Subscription::where('renewal_status', 'Expired')->count(),
-        ];
-
+        // ── PC Assets ───────────────────────────────────────────────
+        // Single GROUP BY query feeds both the KPI tile and the chart.
         $assetStatusCounts = PcAsset::selectRaw('status, COUNT(*) as count')
             ->groupBy('status')
             ->pluck('count', 'status')
             ->all();
 
-        $deviceStatusCounts = Device::selectRaw('status, COUNT(*) as count')
+        // ── Devices ─────────────────────────────────────────────────
+        // Single GROUP BY pulls record counts AND unit sums per status —
+        // covers the KPI tile (total units, active units, total records)
+        // and the inventory chart.
+        $deviceStats = Device::selectRaw('status, COUNT(*) as records, COALESCE(SUM(qty), 0) as units')
             ->groupBy('status')
-            ->pluck('count', 'status')
-            ->all();
+            ->get()
+            ->keyBy('status');
 
+        $deviceStatusCounts = $deviceStats->pluck('records', 'status')->all();
+
+        // ── Subscriptions / Licenses (lifecycle, not GROUP-BY-able) ──
+        // Active counts and "expiring within 30 days" counts use distinct
+        // WHERE filters, so they stay as targeted COUNT queries.
+        $activeSubs = Subscription::where('status', 'Active')->count();
+        $expiringSubsCount = Subscription::where('status', 'Active')
+            ->where('renewal_status', '!=', 'Renewed')
+            ->whereBetween('expire_date', [$today, $in30Days])
+            ->count();
+
+        $activeLicenses = LicenseContract::where('status', 'Active')->count();
+        $expiringLicensesCount = LicenseContract::whereNotIn('status', ['Terminated', 'Expired'])
+            ->whereBetween('expire_date', [$today, $in30Days])
+            ->count();
+
+        $stats = [
+            'total_assets'         => (int) array_sum($assetStatusCounts),
+            'active_assets'        => (int) ($assetStatusCounts['Active'] ?? 0),
+            'free_assets'          => (int) ($assetStatusCounts['Free']   ?? 0),
+
+            'total_devices'        => (int) $deviceStats->sum('records'),
+            'devices_qty'          => (int) $deviceStats->sum('units'),
+            'active_devices'       => (int) ($deviceStats['Active']->records ?? 0),
+            'active_units'         => (int) ($deviceStats['Active']->units   ?? 0),
+
+            'active_subscriptions' => $activeSubs,
+            'active_licenses'      => $activeLicenses,
+
+            'expiring_subs'        => $expiringSubsCount,
+            'expiring_licenses'    => $expiringLicensesCount,
+            'expiring_total'       => $expiringSubsCount + $expiringLicensesCount,
+        ];
+
+        // ── Side panels ─────────────────────────────────────────────
         $expiringSoon = Subscription::where('status', 'Active')
             ->where('renewal_status', '!=', 'Renewed')
             ->whereBetween('expire_date', [$today, $in30Days])
