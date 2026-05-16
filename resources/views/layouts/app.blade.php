@@ -60,29 +60,83 @@
         .sidebar .brand {
             display: flex;
             align-items: center;
-            gap: .65rem;
-            padding: .1rem 1.25rem 1rem;
+            gap: .7rem;
+            padding: .25rem 1.25rem 1rem;
             border-bottom: 1px solid rgba(31, 38, 135, 0.08);
             margin-bottom: .35rem;
+            min-width: 0;
         }
         .sidebar .brand .brand-mark {
-            width: 36px;
-            height: 36px;
-            border-radius: .55rem;
-            background: linear-gradient(135deg, #4f7cff 0%, #6f3cff 100%);
+            position: relative;
+            width: 38px;
+            height: 38px;
+            border-radius: .7rem;
+            background: linear-gradient(135deg, #5b6cff 0%, #8b5cf6 55%, #ec4899 100%);
             color: #fff;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.15rem;
-            box-shadow: 0 6px 14px rgba(79, 124, 255, 0.3);
+            box-shadow:
+                0 8px 18px rgba(91, 108, 255, 0.32),
+                inset 0 1px 0 rgba(255, 255, 255, 0.35),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.10);
             flex-shrink: 0;
+            overflow: hidden;
+            transition: transform .25s ease, box-shadow .25s ease;
         }
-        .sidebar .brand-text { line-height: 1.15; }
-        .sidebar .brand-name { font-weight: 700; font-size: 1.05rem; color: #1f2d3d; letter-spacing: .02em; }
-        .sidebar .brand-sub { font-size: .65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: .08em; font-weight: 600; margin-top: 1px; }
-        [data-bs-theme="dark"] .sidebar .brand-name { color: #fff; }
+        .sidebar .brand .brand-mark::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 55%);
+            pointer-events: none;
+        }
+        .sidebar .brand:hover .brand-mark {
+            transform: translateY(-1px) rotate(-2deg);
+            box-shadow:
+                0 12px 24px rgba(91, 108, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+        }
+        .sidebar .brand .brand-mark .rrs-logo { display: block; }
+        .sidebar .brand-text {
+            line-height: 1.15;
+            min-width: 0;
+        }
+        .sidebar .brand-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #1f2d3d;
+            letter-spacing: -.01em;
+            background: linear-gradient(135deg, #1f2d3d 0%, #4338ca 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sidebar .brand-sub {
+            font-size: .65rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            font-weight: 600;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        [data-bs-theme="dark"] .sidebar .brand-name {
+            background: linear-gradient(135deg, #f1f5f9 0%, #c4b5fd 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
         [data-bs-theme="dark"] .sidebar .brand-sub { color: #64748b; }
+        [data-bs-theme="dark"] .sidebar .brand .brand-mark {
+            box-shadow:
+                0 8px 18px rgba(139, 92, 246, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+        }
 
         .sidebar .nav-section {
             padding: .85rem 1.5rem .35rem;
@@ -967,7 +1021,7 @@
     @endphp
     <nav class="sidebar">
         <a href="{{ route('dashboard') }}" class="brand" style="text-decoration: none;">
-            <span class="brand-mark"><i class="bi bi-hdd-stack-fill"></i></span>
+            <span class="brand-mark">@include('partials._brand_logo')</span>
             <span class="brand-text">
                 <span class="d-block brand-name">ITAMS</span>
                 <span class="d-block brand-sub">IT Assets Management</span>

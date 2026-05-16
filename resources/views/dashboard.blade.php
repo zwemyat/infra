@@ -30,48 +30,318 @@
     </div>
 </div>
 
-<div class="row g-3 mb-3">
-    <div class="col-sm-6 col-xl-3">
-        <div class="card kpi-card kpi-blue h-100">
-            <div class="card-body">
-                <div class="kpi-label">Total PC Assets</div>
-                <div class="kpi-value">{{ number_format($stats['total_assets']) }}</div>
-                <div class="kpi-foot">{{ $stats['active_assets'] }} active &middot; {{ $stats['free_assets'] }} free</div>
-                <i class="bi bi-pc-display kpi-icon"></i>
+@php
+    $activeServices = (int) $stats['active_subscriptions'] + (int) $stats['active_licenses'];
+@endphp
+<section class="kpi-grid" aria-label="Summary metrics">
+    {{-- 1. PC Assets ─ blue ─────────────────────────────────────────── --}}
+    <article class="kpi-tile" data-tone="blue">
+        <header class="kpi-tile-head">
+            <span class="kpi-tile-icon"><i class="bi bi-pc-display"></i></span>
+            <div class="kpi-tile-titles">
+                <h3 class="kpi-tile-title">PC Assets</h3>
+                <span class="kpi-tile-eyebrow">Workstation fleet</span>
             </div>
+        </header>
+        <div class="kpi-tile-body">
+            <span class="kpi-tile-value">{{ number_format($stats['total_assets']) }}</span>
+            <span class="kpi-tile-caption">Registered PCs</span>
         </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="card kpi-card kpi-green h-100">
-            <div class="card-body">
-                <div class="kpi-label">Devices Tracked</div>
-                <div class="kpi-value">{{ number_format($stats['total_devices']) }}</div>
-                <div class="kpi-foot">{{ number_format($stats['devices_qty']) }} units &middot; {{ $stats['active_devices'] }} active</div>
-                <i class="bi bi-hdd-network kpi-icon"></i>
+        <footer class="kpi-tile-foot">
+            <span class="kpi-chip">
+                <span class="kpi-dot kpi-dot-green" aria-hidden="true"></span>
+                <span class="kpi-chip-num">{{ number_format($stats['active_assets']) }}</span>
+                <span class="kpi-chip-lbl">Active</span>
+            </span>
+            <span class="kpi-chip">
+                <span class="kpi-dot kpi-dot-blue" aria-hidden="true"></span>
+                <span class="kpi-chip-num">{{ number_format($stats['free_assets']) }}</span>
+                <span class="kpi-chip-lbl">Available</span>
+            </span>
+        </footer>
+    </article>
+
+    {{-- 2. Devices ─ blue (assets family) ───────────────────────────── --}}
+    <article class="kpi-tile" data-tone="blue">
+        <header class="kpi-tile-head">
+            <span class="kpi-tile-icon"><i class="bi bi-hdd-network"></i></span>
+            <div class="kpi-tile-titles">
+                <h3 class="kpi-tile-title">Devices</h3>
+                <span class="kpi-tile-eyebrow">Network &amp; hardware</span>
             </div>
+        </header>
+        <div class="kpi-tile-body">
+            <span class="kpi-tile-value">{{ number_format($stats['devices_qty']) }}</span>
+            <span class="kpi-tile-caption">Total units in inventory</span>
         </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="card kpi-card kpi-purple h-100">
-            <div class="card-body">
-                <div class="kpi-label">Active Subscriptions</div>
-                <div class="kpi-value">{{ number_format($stats['active_subscriptions']) }}</div>
-                <div class="kpi-foot">of {{ $stats['total_subscriptions'] }} &middot; {{ $stats['active_licenses'] }} licenses</div>
-                <i class="bi bi-calendar-event kpi-icon"></i>
+        <footer class="kpi-tile-foot">
+            <span class="kpi-chip">
+                <span class="kpi-dot kpi-dot-green" aria-hidden="true"></span>
+                <span class="kpi-chip-num">{{ number_format($stats['active_units']) }}</span>
+                <span class="kpi-chip-lbl">Active units</span>
+            </span>
+            <span class="kpi-chip">
+                <span class="kpi-dot kpi-dot-blue" aria-hidden="true"></span>
+                <span class="kpi-chip-num">{{ number_format($stats['total_devices']) }}</span>
+                <span class="kpi-chip-lbl">Records</span>
+            </span>
+        </footer>
+    </article>
+
+    {{-- 3. Subscriptions & Licenses ─ purple ────────────────────────── --}}
+    <article class="kpi-tile" data-tone="purple">
+        <header class="kpi-tile-head">
+            <span class="kpi-tile-icon"><i class="bi bi-stars"></i></span>
+            <div class="kpi-tile-titles">
+                <h3 class="kpi-tile-title">Subscriptions &amp; Licenses</h3>
+                <span class="kpi-tile-eyebrow">Software services</span>
             </div>
+        </header>
+        <div class="kpi-tile-body">
+            <span class="kpi-tile-value">{{ number_format($activeServices) }}</span>
+            <span class="kpi-tile-caption">Active services</span>
         </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="card kpi-card kpi-amber h-100">
-            <div class="card-body">
-                <div class="kpi-label">Expiring Soon (30d)</div>
-                <div class="kpi-value">{{ number_format($stats['expiring_total']) }}</div>
-                <div class="kpi-foot">{{ $stats['expiring_subs'] }} subs &middot; {{ $stats['expiring_licenses'] }} licenses</div>
-                <i class="bi bi-exclamation-triangle kpi-icon"></i>
+        <footer class="kpi-tile-foot">
+            <span class="kpi-chip">
+                <span class="kpi-dot kpi-dot-purple" aria-hidden="true"></span>
+                <span class="kpi-chip-num">{{ number_format($stats['active_subscriptions']) }}</span>
+                <span class="kpi-chip-lbl">Subscriptions</span>
+            </span>
+            <span class="kpi-chip">
+                <span class="kpi-dot kpi-dot-indigo" aria-hidden="true"></span>
+                <span class="kpi-chip-num">{{ number_format($stats['active_licenses']) }}</span>
+                <span class="kpi-chip-lbl">Licenses</span>
+            </span>
+        </footer>
+    </article>
+
+    {{-- 4. Expiring Soon ─ amber/red ────────────────────────────────── --}}
+    <article class="kpi-tile" data-tone="alert">
+        <header class="kpi-tile-head">
+            <span class="kpi-tile-icon"><i class="bi bi-exclamation-triangle-fill"></i></span>
+            <div class="kpi-tile-titles">
+                <h3 class="kpi-tile-title">Expiring Soon</h3>
+                <span class="kpi-tile-eyebrow">Action required</span>
             </div>
+        </header>
+        <div class="kpi-tile-body">
+            <span class="kpi-tile-value">{{ number_format($stats['expiring_total']) }}</span>
+            <span class="kpi-tile-caption">Within 30 days</span>
         </div>
-    </div>
-</div>
+        <footer class="kpi-tile-foot">
+            <span class="kpi-chip">
+                <span class="kpi-dot kpi-dot-amber" aria-hidden="true"></span>
+                <span class="kpi-chip-num">{{ number_format($stats['expiring_subs']) }}</span>
+                <span class="kpi-chip-lbl">Subscriptions</span>
+            </span>
+            <span class="kpi-chip">
+                <span class="kpi-dot kpi-dot-amber" aria-hidden="true"></span>
+                <span class="kpi-chip-num">{{ number_format($stats['expiring_licenses']) }}</span>
+                <span class="kpi-chip-lbl">Licenses</span>
+            </span>
+        </footer>
+    </article>
+</section>
+
+<style>
+    /* ─── KPI Grid ───────────────────────────────────────────────────────── */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    @media (min-width: 576px)  { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1200px) { .kpi-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    /* ─── Tile shell ─────────────────────────────────────────────────────── */
+    .kpi-tile {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.15rem 1.25rem;
+        background: #fff;
+        border: 1px solid rgba(15, 23, 42, 0.07);
+        border-radius: .95rem;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+        overflow: hidden;
+        isolation: isolate;
+    }
+    .kpi-tile::before {
+        content: '';
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 3px;
+        background: var(--kpi-accent, #3b82f6);
+        opacity: .9;
+    }
+    .kpi-tile::after {
+        content: '';
+        position: absolute;
+        top: -40%;
+        right: -20%;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--kpi-accent-soft, rgba(59,130,246,0.10)) 0%, transparent 65%);
+        z-index: -1;
+        pointer-events: none;
+    }
+    .kpi-tile:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        border-color: rgba(15, 23, 42, 0.12);
+    }
+    [data-bs-theme="dark"] .kpi-tile {
+        background: rgba(30, 36, 48, 0.72);
+        border-color: rgba(255, 255, 255, 0.06);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    [data-bs-theme="dark"] .kpi-tile:hover {
+        border-color: rgba(255, 255, 255, 0.14);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ─── Head ───────────────────────────────────────────────────────────── */
+    .kpi-tile-head {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+    }
+    .kpi-tile-icon {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: .65rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+        color: var(--kpi-accent, #3b82f6);
+        background: var(--kpi-accent-soft, rgba(59,130,246,0.12));
+        box-shadow: inset 0 0 0 1px var(--kpi-accent-ring, rgba(59,130,246,0.18));
+    }
+    .kpi-tile-titles { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+    .kpi-tile-title {
+        font-size: .92rem;
+        font-weight: 600;
+        margin: 0;
+        color: #0f172a;
+        letter-spacing: -.005em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .kpi-tile-eyebrow {
+        font-size: .68rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        color: #94a3b8;
+        margin-top: 2px;
+    }
+    [data-bs-theme="dark"] .kpi-tile-title   { color: #f1f5f9; }
+    [data-bs-theme="dark"] .kpi-tile-eyebrow { color: #64748b; }
+
+    /* ─── Body / primary metric ──────────────────────────────────────────── */
+    .kpi-tile-body {
+        display: flex;
+        flex-direction: column;
+        line-height: 1;
+    }
+    .kpi-tile-value {
+        font-size: clamp(1.85rem, 2.4vw, 2.25rem);
+        font-weight: 700;
+        letter-spacing: -.02em;
+        color: #0f172a;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.05;
+    }
+    .kpi-tile-caption {
+        font-size: .78rem;
+        color: #64748b;
+        font-weight: 500;
+        margin-top: .35rem;
+    }
+    [data-bs-theme="dark"] .kpi-tile-value   { color: #f8fafc; }
+    [data-bs-theme="dark"] .kpi-tile-caption { color: #94a3b8; }
+
+    /* ─── Foot / breakdown chips ─────────────────────────────────────────── */
+    .kpi-tile-foot {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding-top: .75rem;
+        border-top: 1px dashed rgba(15, 23, 42, 0.08);
+        flex-wrap: wrap;
+    }
+    [data-bs-theme="dark"] .kpi-tile-foot { border-top-color: rgba(255, 255, 255, 0.08); }
+
+    .kpi-chip {
+        display: inline-flex;
+        align-items: baseline;
+        gap: .4rem;
+        font-size: .8rem;
+        line-height: 1;
+        min-width: 0;
+    }
+    .kpi-chip-num {
+        font-weight: 700;
+        color: #0f172a;
+        font-variant-numeric: tabular-nums;
+        font-size: .9rem;
+    }
+    .kpi-chip-lbl {
+        color: #64748b;
+        font-weight: 500;
+    }
+    [data-bs-theme="dark"] .kpi-chip-num { color: #f1f5f9; }
+    [data-bs-theme="dark"] .kpi-chip-lbl { color: #94a3b8; }
+
+    .kpi-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        align-self: center;
+        box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.04);
+    }
+    .kpi-dot-green  { background: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,0.18); }
+    .kpi-dot-blue   { background: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.18); }
+    .kpi-dot-purple { background: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,0.18); }
+    .kpi-dot-indigo { background: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.18); }
+    .kpi-dot-amber  { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,0.18); }
+    .kpi-dot-red    { background: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.18); }
+
+    /* ─── Tone palettes ──────────────────────────────────────────────────── */
+    .kpi-tile[data-tone="blue"] {
+        --kpi-accent:      #3b82f6;
+        --kpi-accent-soft: rgba(59,130,246,0.12);
+        --kpi-accent-ring: rgba(59,130,246,0.20);
+    }
+    .kpi-tile[data-tone="purple"] {
+        --kpi-accent:      #8b5cf6;
+        --kpi-accent-soft: rgba(139,92,246,0.12);
+        --kpi-accent-ring: rgba(139,92,246,0.20);
+    }
+    .kpi-tile[data-tone="alert"] {
+        --kpi-accent:      #f59e0b;
+        --kpi-accent-soft: rgba(245,158,11,0.13);
+        --kpi-accent-ring: rgba(245,158,11,0.22);
+    }
+    /* Dark-mode tone tweaks — slightly brighter accent for contrast */
+    [data-bs-theme="dark"] .kpi-tile[data-tone="blue"]   { --kpi-accent-soft: rgba(59,130,246,0.18);  }
+    [data-bs-theme="dark"] .kpi-tile[data-tone="purple"] { --kpi-accent-soft: rgba(139,92,246,0.20);  }
+    [data-bs-theme="dark"] .kpi-tile[data-tone="alert"]  { --kpi-accent-soft: rgba(245,158,11,0.22);  }
+
+    /* ─── Reduced motion ─────────────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+        .kpi-tile { transition: none; }
+        .kpi-tile:hover { transform: none; }
+    }
+</style>
 
 <div class="row g-3 mb-3">
     <div class="col-xl-8">

@@ -35,6 +35,7 @@ class DashboardController extends Controller
             'total_devices'        => Device::count(),
             'devices_qty'          => (int) Device::sum('qty'),
             'active_devices'       => Device::where('status', 'Active')->count(),
+            'active_units'         => (int) Device::where('status', 'Active')->sum('qty'),
 
             'total_subscriptions'  => Subscription::count(),
             'active_subscriptions' => Subscription::where('status', 'Active')->count(),
