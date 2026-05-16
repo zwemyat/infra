@@ -110,10 +110,11 @@
 @endif
 <section class="kpi-grid" aria-label="Summary metrics">
     {{-- 1. PC Assets ─ blue ─────────────────────────────────────────── --}}
+    @if($pcLink)
+    <a href="{{ $pcLink }}" class="kpi-tile" data-tone="blue" aria-label="View all PC assets">
+    @else
     <article class="kpi-tile" data-tone="blue">
-        @if($pcLink)
-            <a href="{{ $pcLink }}" class="kpi-tile-link" aria-label="View all PC assets"></a>
-        @endif
+    @endif
         <header class="kpi-tile-head">
             <span class="kpi-tile-icon"><i class="bi bi-pc-display"></i></span>
             <div class="kpi-tile-titles">
@@ -137,13 +138,14 @@
                 <span class="kpi-chip-lbl">Available</span>
             </span>
         </footer>
-    </article>
+    @if($pcLink)</a>@else</article>@endif
 
     {{-- 2. Devices ─ blue (assets family) ───────────────────────────── --}}
+    @if($devLink)
+    <a href="{{ $devLink }}" class="kpi-tile" data-tone="blue" aria-label="View all devices">
+    @else
     <article class="kpi-tile" data-tone="blue">
-        @if($devLink)
-            <a href="{{ $devLink }}" class="kpi-tile-link" aria-label="View all devices"></a>
-        @endif
+    @endif
         <header class="kpi-tile-head">
             <span class="kpi-tile-icon"><i class="bi bi-hdd-network"></i></span>
             <div class="kpi-tile-titles">
@@ -167,13 +169,14 @@
                 <span class="kpi-chip-lbl">Records</span>
             </span>
         </footer>
-    </article>
+    @if($devLink)</a>@else</article>@endif
 
     {{-- 3. Subscriptions & Licenses ─ purple ────────────────────────── --}}
+    @if($subsLink)
+    <a href="{{ $subsLink }}" class="kpi-tile" data-tone="purple" aria-label="View active subscriptions and licenses">
+    @else
     <article class="kpi-tile" data-tone="purple">
-        @if($subsLink)
-            <a href="{{ $subsLink }}" class="kpi-tile-link" aria-label="View active subscriptions and licenses"></a>
-        @endif
+    @endif
         <header class="kpi-tile-head">
             <span class="kpi-tile-icon"><i class="bi bi-stars"></i></span>
             <div class="kpi-tile-titles">
@@ -197,13 +200,14 @@
                 <span class="kpi-chip-lbl">Licenses</span>
             </span>
         </footer>
-    </article>
+    @if($subsLink)</a>@else</article>@endif
 
     {{-- 4. Expiring Soon ─ amber/red ────────────────────────────────── --}}
+    @if($expireLink)
+    <a href="{{ $expireLink }}" class="kpi-tile" data-tone="alert" aria-label="View items expiring within 30 days">
+    @else
     <article class="kpi-tile" data-tone="alert">
-        @if($expireLink)
-            <a href="{{ $expireLink }}" class="kpi-tile-link" aria-label="View items expiring within 30 days"></a>
-        @endif
+    @endif
         <header class="kpi-tile-head">
             <span class="kpi-tile-icon"><i class="bi bi-exclamation-triangle-fill"></i></span>
             <div class="kpi-tile-titles">
@@ -227,7 +231,7 @@
                 <span class="kpi-chip-lbl">Licenses</span>
             </span>
         </footer>
-    </article>
+    @if($expireLink)</a>@else</article>@endif
 </section>
 
 <style>
@@ -276,37 +280,30 @@
         z-index: -1;
         pointer-events: none;
     }
+    /* Anchor-tile reset — when the tile itself is an <a> (admin / module-
+       authorized user), strip inherited anchor styling so it looks identical
+       to the <article> variant. */
+    a.kpi-tile {
+        color: inherit;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    a.kpi-tile:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.10);
+        border-color: rgba(15, 23, 42, 0.15);
+    }
+    a.kpi-tile:focus { outline: none; }
+    a.kpi-tile:focus-visible {
+        outline: 2px solid var(--kpi-accent, #3b82f6);
+        outline-offset: 3px;
+    }
     .kpi-tile:hover {
         transform: translateY(-2px);
         box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
         border-color: rgba(15, 23, 42, 0.12);
     }
-
-    /* Stretched overlay link — makes the entire tile clickable when the user
-       has access to the target module. Renders invisibly above the tile content. */
-    .kpi-tile-link {
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        border-radius: inherit;
-        cursor: pointer;
-        text-decoration: none;
-        /* Keyboard focus ring sits flush around the tile */
-    }
-    .kpi-tile-link:focus { outline: none; }
-    .kpi-tile-link:focus-visible {
-        outline: 2px solid var(--kpi-accent, #3b82f6);
-        outline-offset: 3px;
-        border-radius: calc(.95rem + 3px);
-    }
-    /* Lift slightly more on hover/focus when interactive */
-    .kpi-tile:has(.kpi-tile-link:hover),
-    .kpi-tile:has(.kpi-tile-link:focus-visible) {
-        transform: translateY(-3px);
-        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.10);
-    }
-    [data-bs-theme="dark"] .kpi-tile:has(.kpi-tile-link:hover),
-    [data-bs-theme="dark"] .kpi-tile:has(.kpi-tile-link:focus-visible) {
+    [data-bs-theme="dark"] a.kpi-tile:hover {
         box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
     }
     [data-bs-theme="dark"] .kpi-tile {
