@@ -651,7 +651,7 @@
                     <h6 class="mb-0"><i class="bi bi-bar-chart-fill text-primary"></i> Inventory Health</h6>
                     <span class="text-muted small">PC Master &amp; Device Master</span>
                 </div>
-                <div style="position: relative; height: 240px;">
+                <div class="chart-frame">
                     <canvas id="inventoryChart"></canvas>
                 </div>
             </div>
@@ -666,7 +666,7 @@
                         <a href="{{ route('activity-logs.index') }}" class="small text-decoration-none">View all</a>
                     @endif
                 </div>
-                <div class="flex-grow-1" style="max-height: 240px; overflow-y: auto;">
+                <div class="flex-grow-1 activity-scroll">
                     @forelse($recentActivity as $log)
                         @php
                             $iconMap = [

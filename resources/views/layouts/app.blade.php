@@ -556,6 +556,26 @@
         [data-bs-theme="dark"] .app-breadcrumb-item.is-current span { color: #f1f5f9; }
         [data-bs-theme="dark"] .app-breadcrumb-sep { color: #475569; }
 
+        /* ─── Chart frame ─────────────────────────────────────────────────── */
+        /* Chart.js needs an explicit height on its container when
+           maintainAspectRatio is off. Use a viewport-aware clamp so the
+           chart grows on tall screens and collapses sensibly on phones,
+           replacing the previous hard-coded 240px / 200px. */
+        .chart-frame {
+            position: relative;
+            height: clamp(200px, 28vh, 320px);
+        }
+        .chart-frame-sm {
+            height: clamp(180px, 22vh, 260px);
+        }
+
+        /* Recent-activity scroll panel — same clamp profile as the main
+           dashboard chart so the two side-by-side cards stay balanced. */
+        .activity-scroll {
+            max-height: clamp(200px, 28vh, 320px);
+            overflow-y: auto;
+        }
+
         /* ─── Status badge ───────────────────────────────────────────────── */
         /* Centralized look for badges rendered via partials/_status_badge.
            The icon glyph is purely presentational — aria-hidden via the

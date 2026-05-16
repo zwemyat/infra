@@ -155,7 +155,7 @@
                         <span class="text-muted small">{{ $chartTotal }} PC{{ $chartTotal === 1 ? '' : 's' }}</span>
                     </div>
                     @if($chartTotal > 0)
-                        <div style="position: relative; height: 200px;">
+                        <div class="chart-frame chart-frame-sm">
                             <canvas id="pcStatusChart"
                                     data-chart-labels='@json($statusOrder)'
                                     data-chart-data='@json($chartData)'></canvas>
