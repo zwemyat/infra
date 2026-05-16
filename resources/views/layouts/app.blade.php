@@ -452,6 +452,42 @@
             background: rgba(147, 197, 253, 0.15);
             color: #93c5fd;
         }
+        /* ─── Skip-to-content link ───────────────────────────────────────── */
+        /* Visually hidden until keyboard focus. Sits as the first DOM child
+           of <body> so Tab from the address bar lands here before the sidebar. */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            z-index: 2000;
+            padding: .55rem .9rem;
+            background: #0f172a;
+            color: #f8fafc;
+            font-size: .85rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: .5rem;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.25);
+            transition: top .15s ease;
+        }
+        .skip-link:focus,
+        .skip-link:focus-visible {
+            top: 1rem;
+            outline: 2px solid #5b6cff;
+            outline-offset: 2px;
+        }
+        [data-bs-theme="dark"] .skip-link {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+        [data-bs-theme="dark"] .skip-link:focus,
+        [data-bs-theme="dark"] .skip-link:focus-visible {
+            outline-color: #a5b4fc;
+        }
+        /* Target should not show a visible focus ring when focused
+           programmatically by the skip link — only when the user tabs to it. */
+        #main-content:focus { outline: none; }
+
         .content { padding: 1.5rem; }
 
         /* ─── Breadcrumb ─────────────────────────────────────────────────── */
@@ -1066,6 +1102,10 @@
             || $user->canAccess('licenses_contracts')
             || $user->canAccess('devices');
     @endphp
+    {{-- Skip-to-content link — first focusable element on every authenticated
+         page so keyboard users can bypass the sidebar nav and jump straight
+         to the page body. Visually hidden until focused. --}}
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <nav class="sidebar">
         <a href="{{ route('dashboard') }}" class="brand" style="text-decoration: none;">
             <span class="brand-mark">@include('partials._brand_logo')</span>
@@ -1231,7 +1271,7 @@
                 </div>
             </div>
         </div>
-        <div class="content">
+        <div class="content" id="main-content" tabindex="-1">
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show">
                     {{ session('success') }}
