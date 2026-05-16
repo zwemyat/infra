@@ -96,7 +96,7 @@
                     </header>
 
                     @if($errors->any())
-                        <div class="auth-alert" role="alert">
+                        <div id="auth-error" class="auth-alert" role="alert">
                             <i class="bi bi-exclamation-octagon-fill"></i>
                             <span>{{ $errors->first() }}</span>
                         </div>
@@ -115,6 +115,7 @@
                                     name="email"
                                     value="{{ old('email') }}"
                                     class="auth-input-control @error('email') has-error @enderror"
+                                    @if($errors->any()) aria-invalid="true" aria-describedby="auth-error" @endif
                                     placeholder="you@company.com"
                                     required
                                     autofocus
@@ -135,6 +136,7 @@
                                     id="password"
                                     name="password"
                                     class="auth-input-control @error('password') has-error @enderror"
+                                    @if($errors->any()) aria-invalid="true" aria-describedby="auth-error" @endif
                                     placeholder="Enter your password"
                                     required
                                     autocomplete="current-password">

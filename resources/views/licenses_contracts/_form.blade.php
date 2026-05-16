@@ -6,9 +6,9 @@
     <div class="card-body">
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label">Software / Contract Name <span class="text-danger">*</span></label>
-                <input type="text" name="software_name" value="{{ old('software_name', $item->software_name ?? '') }}" class="form-control @error('software_name') is-invalid @enderror" placeholder="e.g. Microsoft 365 Business Premium" required>
-                @error('software_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <label for="software_name" class="form-label">Software / Contract Name <span class="text-danger">*</span></label>
+                <input type="text" name="software_name" id="software_name" value="{{ old('software_name', $item->software_name ?? '') }}" class="form-control @error('software_name') is-invalid @enderror" @aria('software_name') placeholder="e.g. Microsoft 365 Business Premium" required>
+                @error('software_name')<div id="software_name-error" class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
             <div class="col-md-3">
                 <label class="form-label">Status</label>
@@ -49,10 +49,10 @@
                 <input type="date" name="last_renewal_date" value="{{ old('last_renewal_date', isset($item->last_renewal_date) ? $item->last_renewal_date->format('Y-m-d') : '') }}" class="form-control">
             </div>
             <div class="col-md-4">
-                <label class="form-label">Expire Date <span class="text-danger">*</span></label>
-                <input type="date" name="expire_date" value="{{ old('expire_date', isset($item->expire_date) ? $item->expire_date->format('Y-m-d') : '') }}" class="form-control @error('expire_date') is-invalid @enderror" required>
+                <label for="expire_date" class="form-label">Expire Date <span class="text-danger">*</span></label>
+                <input type="date" name="expire_date" id="expire_date" value="{{ old('expire_date', isset($item->expire_date) ? $item->expire_date->format('Y-m-d') : '') }}" class="form-control @error('expire_date') is-invalid @enderror" @aria('expire_date') required>
                 <small class="text-muted">Reminder fires 30 days before this date.</small>
-                @error('expire_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                @error('expire_date')<div id="expire_date-error" class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
     </div>

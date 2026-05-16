@@ -6,19 +6,19 @@
     <div class="card-body">
         <div class="row g-3">
             <div class="col-md-4">
-                <label class="form-label">Service Type <span class="text-danger">*</span></label>
-                <input type="text" name="service_type" value="{{ old('service_type', $subscription->service_type ?? '') }}" class="form-control @error('service_type') is-invalid @enderror" maxlength="100" placeholder="e.g. Domain, SSL, Hosting, Cloud Service" required>
-                @error('service_type')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <label for="service_type" class="form-label">Service Type <span class="text-danger">*</span></label>
+                <input type="text" name="service_type" id="service_type" value="{{ old('service_type', $subscription->service_type ?? '') }}" class="form-control @error('service_type') is-invalid @enderror" @aria('service_type') maxlength="100" placeholder="e.g. Domain, SSL, Hosting, Cloud Service" required>
+                @error('service_type')<div id="service_type-error" class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
             <div class="col-md-4">
-                <label class="form-label">Project Name <span class="text-danger">*</span></label>
-                <input type="text" name="project_name" value="{{ old('project_name', $subscription->project_name ?? '') }}" class="form-control @error('project_name') is-invalid @enderror" required>
-                @error('project_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <label for="project_name" class="form-label">Project Name <span class="text-danger">*</span></label>
+                <input type="text" name="project_name" id="project_name" value="{{ old('project_name', $subscription->project_name ?? '') }}" class="form-control @error('project_name') is-invalid @enderror" @aria('project_name') required>
+                @error('project_name')<div id="project_name-error" class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
             <div class="col-md-4">
-                <label class="form-label">Subscription Name <span class="text-danger">*</span></label>
-                <input type="text" name="subscription_name" value="{{ old('subscription_name', $subscription->subscription_name ?? '') }}" class="form-control @error('subscription_name') is-invalid @enderror" placeholder="e.g. company.com, Wildcard SSL" required>
-                @error('subscription_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <label for="subscription_name" class="form-label">Subscription Name <span class="text-danger">*</span></label>
+                <input type="text" name="subscription_name" id="subscription_name" value="{{ old('subscription_name', $subscription->subscription_name ?? '') }}" class="form-control @error('subscription_name') is-invalid @enderror" @aria('subscription_name') placeholder="e.g. company.com, Wildcard SSL" required>
+                @error('subscription_name')<div id="subscription_name-error" class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
             <div class="col-md-4">
                 <label class="form-label">Vendor Name</label>
@@ -46,10 +46,10 @@
     <div class="card-body">
         <div class="row g-3">
             <div class="col-md-4">
-                <label class="form-label">Expire Date <span class="text-danger">*</span></label>
-                <input type="date" name="expire_date" value="{{ old('expire_date', isset($subscription->expire_date) ? $subscription->expire_date->format('Y-m-d') : '') }}" class="form-control @error('expire_date') is-invalid @enderror" required>
+                <label for="expire_date" class="form-label">Expire Date <span class="text-danger">*</span></label>
+                <input type="date" name="expire_date" id="expire_date" value="{{ old('expire_date', isset($subscription->expire_date) ? $subscription->expire_date->format('Y-m-d') : '') }}" class="form-control @error('expire_date') is-invalid @enderror" @aria('expire_date') required>
                 <small class="text-muted">Reminder fires 30 days before this date.</small>
-                @error('expire_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                @error('expire_date')<div id="expire_date-error" class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
             <div class="col-md-4">
                 <label class="form-label">Renewal Type</label>

@@ -34,9 +34,9 @@
                 <label class="btn btn-outline-primary btn-sm" for="avatarInput">
                     <i class="bi bi-upload"></i> {{ $editing && $user->avatar ? 'Replace photo' : 'Upload photo' }}
                 </label>
-                <input type="file" name="avatar" id="avatarInput" class="d-none @error('avatar') is-invalid @enderror" accept="image/*">
+                <input type="file" name="avatar" id="avatarInput" class="d-none @error('avatar') is-invalid @enderror" @aria('avatar') accept="image/*">
                 <div class="text-muted small mt-2">JPG/PNG/WebP, max 2 MB.</div>
-                @error('avatar')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+                @error('avatar')<div id="avatar-error" class="text-danger small mt-1">{{ $message }}</div>@enderror
             </div>
         </div>
     </div>
@@ -49,29 +49,29 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label">Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" id="nameInput" value="{{ old('name', $user->name ?? '') }}" class="form-control @error('name') is-invalid @enderror" placeholder="Full name" required>
-                        @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        <label for="nameInput" class="form-label">Name <span class="text-danger">*</span></label>
+                        <input type="text" name="name" id="nameInput" value="{{ old('name', $user->name ?? '') }}" class="form-control @error('name') is-invalid @enderror" @aria('name') placeholder="Full name" required>
+                        @error('name')<div id="name-error" class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Email <span class="text-danger">*</span></label>
+                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-envelope text-muted"></i></span>
-                            <input type="email" name="email" value="{{ old('email', $user->email ?? '') }}" class="form-control border-start-0 ps-0 @error('email') is-invalid @enderror" placeholder="user@company.com" required>
-                            @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <input type="email" name="email" id="email" value="{{ old('email', $user->email ?? '') }}" class="form-control border-start-0 ps-0 @error('email') is-invalid @enderror" @aria('email') placeholder="user@company.com" required>
+                            @error('email')<div id="email-error" class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <label class="form-label">Password @if($editing)<span class="text-muted small">(leave blank to keep)</span>@else <span class="text-danger">*</span>@endif</label>
+                        <label for="userPassword" class="form-label">Password @if($editing)<span class="text-muted small">(leave blank to keep)</span>@else <span class="text-danger">*</span>@endif</label>
                         <div class="input-group">
                             <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-lock text-muted"></i></span>
-                            <input type="password" name="password" id="userPassword" class="form-control border-start-0 ps-0 @error('password') is-invalid @enderror" placeholder="{{ $editing ? '••••••••' : 'Minimum 6 characters' }}" {{ $editing ? '' : 'required' }}>
+                            <input type="password" name="password" id="userPassword" class="form-control border-start-0 ps-0 @error('password') is-invalid @enderror" @aria('password') placeholder="{{ $editing ? '••••••••' : 'Minimum 6 characters' }}" {{ $editing ? '' : 'required' }}>
                             <button type="button" class="btn btn-outline-secondary" id="togglePw" tabindex="-1" title="Show / hide password"><i class="bi bi-eye" id="togglePwIcon"></i></button>
-                            @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            @error('password')<div id="password-error" class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Role <span class="text-danger">*</span></label>
+                        <label for="roleSelect" class="form-label">Role <span class="text-danger">*</span></label>
                         <select name="role" id="roleSelect" class="form-select">
                             <option value="user"  @selected($currentRole === 'user')>User</option>
                             <option value="admin" @selected($currentRole === 'admin')>Admin</option>

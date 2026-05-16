@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\MailSetting;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,7 +19,23 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
 
+        $this->registerBladeDirectives();
         $this->applyDbMailSettings();
+    }
+
+    /**
+     * @aria('field')  — emits aria-invalid + aria-describedby on an input
+     * when validation for that field failed. Pair with an error message
+     * element carrying id="{field}-error" so screen readers can announce
+     * the failure. Outputs nothing when the field is valid.
+     */
+    private function registerBladeDirectives(): void
+    {
+        Blade::directive('aria', function (string $expression) {
+            return "<?php echo \$errors->has({$expression})
+                ? 'aria-invalid=\"true\" aria-describedby=\"' . e({$expression}) . '-error\"'
+                : ''; ?>";
+        });
     }
 
     private function applyDbMailSettings(): void

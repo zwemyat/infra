@@ -6,14 +6,14 @@
     <div class="card-body">
         <div class="row g-3">
             <div class="col-md-4">
-                <label class="form-label">Computer ID <span class="text-danger">*</span></label>
-                <input type="text" name="computer_id" value="{{ old('computer_id', $asset->computer_id ?? '') }}" class="form-control @error('computer_id') is-invalid @enderror" placeholder="e.g. PC-001" required>
-                @error('computer_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <label for="computer_id" class="form-label">Computer ID <span class="text-danger">*</span></label>
+                <input type="text" name="computer_id" id="computer_id" value="{{ old('computer_id', $asset->computer_id ?? '') }}" class="form-control @error('computer_id') is-invalid @enderror" @aria('computer_id') placeholder="e.g. PC-001" required>
+                @error('computer_id')<div id="computer_id-error" class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
             <div class="col-md-4">
-                <label class="form-label">Hostname <span class="text-danger">*</span></label>
-                <input type="text" name="hostname" value="{{ old('hostname', $asset->hostname ?? '') }}" class="form-control @error('hostname') is-invalid @enderror" placeholder="e.g. IT-WS01" required>
-                @error('hostname')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <label for="hostname" class="form-label">Hostname <span class="text-danger">*</span></label>
+                <input type="text" name="hostname" id="hostname" value="{{ old('hostname', $asset->hostname ?? '') }}" class="form-control @error('hostname') is-invalid @enderror" @aria('hostname') placeholder="e.g. IT-WS01" required>
+                @error('hostname')<div id="hostname-error" class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
             <div class="col-md-4">
                 <label class="form-label">Employee Name</label>

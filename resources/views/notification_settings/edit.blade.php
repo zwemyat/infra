@@ -110,19 +110,19 @@
 
                             <div class="row g-3">
                                 <div class="col-md-4">
-                                    <label class="form-label">Reminder days before expiry <span class="text-danger">*</span></label>
+                                    <label for="days_before_{{ $key }}" class="form-label">Reminder days before expiry <span class="text-danger">*</span></label>
                                     <div class="input-group">
-                                        <input type="number" name="days_before" min="1" max="365" value="{{ old('days_before', $setting->days_before ?? 30) }}" class="form-control @error('days_before') is-invalid @enderror" required>
+                                        <input type="number" name="days_before" id="days_before_{{ $key }}" min="1" max="365" value="{{ old('days_before', $setting->days_before ?? 30) }}" class="form-control @error('days_before') is-invalid @enderror" @if($errors->has('days_before')) aria-invalid="true" aria-describedby="days_before_{{ $key }}-error" @endif required>
                                         <span class="input-group-text">days</span>
                                     </div>
                                     <small class="text-muted">Records within this window trigger reminders.</small>
-                                    @error('days_before')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                    @error('days_before')<div id="days_before_{{ $key }}-error" class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                 </div>
                                 <div class="col-md-8">
-                                    <label class="form-label">Recipients</label>
-                                    <textarea name="recipients" rows="3" class="form-control @error($errorKey) is-invalid @enderror" placeholder="One or more emails — separate with comma, semicolon, or newline.&#10;e.g. ops@company.com, admin@company.com">{{ old('recipients', $setting->recipients) }}</textarea>
+                                    <label for="recipients_{{ $key }}" class="form-label">Recipients</label>
+                                    <textarea name="recipients" id="recipients_{{ $key }}" rows="3" class="form-control @error($errorKey) is-invalid @enderror" @if($errors->has($errorKey)) aria-invalid="true" aria-describedby="recipients_{{ $key }}-error" @endif placeholder="One or more emails — separate with comma, semicolon, or newline.&#10;e.g. ops@company.com, admin@company.com">{{ old('recipients', $setting->recipients) }}</textarea>
                                     <small class="text-muted">Leave empty to fall back to all admin users' emails.</small>
-                                    @error($errorKey)<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                    @error($errorKey)<div id="recipients_{{ $key }}-error" class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                 </div>
                             </div>
 
