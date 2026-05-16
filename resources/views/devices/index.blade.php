@@ -244,7 +244,10 @@
             <div class="card-body py-2 d-flex justify-content-between align-items-center">
                 <span class="small">
                     <i class="bi bi-check2-square text-primary"></i>
-                    <strong id="deviceBulkCount">0</strong> selected
+                    <strong id="deviceBulkCount">0</strong> selected on this page
+                    @if($devices->total() > $devices->count())
+                        <span class="text-muted">&middot; {{ number_format($devices->total()) }} match this filter</span>
+                    @endif
                 </span>
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-sm btn-outline-secondary" id="deviceBulkClear">Clear</button>
@@ -506,7 +509,7 @@
             alert('Select at least one device to delete.');
             return;
         }
-        if (!confirm(`Delete ${selected} selected device(s)? This cannot be undone.`)) {
+        if (!confirm(`Delete ${selected} device(s) on this page? This cannot be undone.`)) {
             e.preventDefault();
         }
     });

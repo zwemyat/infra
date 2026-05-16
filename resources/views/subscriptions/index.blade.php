@@ -248,7 +248,10 @@
             <div class="card-body py-2 d-flex justify-content-between align-items-center">
                 <span class="small">
                     <i class="bi bi-check2-square text-primary"></i>
-                    <strong id="subBulkCount">0</strong> selected
+                    <strong id="subBulkCount">0</strong> selected on this page
+                    @if($subscriptions->total() > $subscriptions->count())
+                        <span class="text-muted">&middot; {{ number_format($subscriptions->total()) }} match this filter</span>
+                    @endif
                 </span>
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-sm btn-outline-secondary" id="subBulkClear">Clear</button>
@@ -508,7 +511,7 @@
             alert('Select at least one subscription to delete.');
             return;
         }
-        if (!confirm(`Delete ${selected} selected subscription(s)? This cannot be undone.`)) {
+        if (!confirm(`Delete ${selected} subscription(s) on this page? This cannot be undone.`)) {
             e.preventDefault();
         }
     });
