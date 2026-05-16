@@ -45,7 +45,69 @@
                     : ($user->canAccess('licenses_contracts')
                         ? route('licenses-contracts.index', ['expiring_soon' => 1])
                         : null);
+
+    // First-time onboarding nudge — surfaces when an admin lands on a dashboard
+    // with zero data across every module. Hides automatically once anything
+    // exists; non-admins never see it (they can't create records).
+    $isFirstRun = $user->isAdmin()
+        && $stats['total_assets']         === 0
+        && $stats['total_devices']        === 0
+        && $stats['active_subscriptions'] === 0
+        && $stats['active_licenses']      === 0;
 @endphp
+
+@if($isFirstRun)
+<section class="onboarding-card" aria-label="Getting started">
+    <div class="onboarding-head">
+        <div>
+            <h2 class="onboarding-title">Let's set up your IT inventory</h2>
+            <p class="onboarding-sub">
+                Pick a starting point below. Most teams begin with the PC fleet, then layer in subscriptions
+                and licenses so renewal reminders fire on time.
+            </p>
+        </div>
+        <span class="onboarding-badge"><i class="bi bi-rocket-takeoff"></i> Getting started</span>
+    </div>
+    <div class="onboarding-grid">
+        <a href="{{ route('pc-assets.create') }}" class="onboarding-step" data-step="1">
+            <span class="onboarding-step-num">1</span>
+            <span class="onboarding-step-icon" style="--ob: 59,130,246;"><i class="bi bi-pc-display"></i></span>
+            <span class="onboarding-step-body">
+                <span class="onboarding-step-title">Add your first PC</span>
+                <span class="onboarding-step-desc">Register workstations and laptops in the PC Master.</span>
+            </span>
+            <i class="bi bi-arrow-right onboarding-step-arrow"></i>
+        </a>
+        <a href="{{ route('devices.create') }}" class="onboarding-step" data-step="2">
+            <span class="onboarding-step-num">2</span>
+            <span class="onboarding-step-icon" style="--ob: 6,182,212;"><i class="bi bi-hdd-network"></i></span>
+            <span class="onboarding-step-body">
+                <span class="onboarding-step-title">Add a device</span>
+                <span class="onboarding-step-desc">Network gear, peripherals, and other hardware.</span>
+            </span>
+            <i class="bi bi-arrow-right onboarding-step-arrow"></i>
+        </a>
+        <a href="{{ route('subscriptions.create') }}" class="onboarding-step" data-step="3">
+            <span class="onboarding-step-num">3</span>
+            <span class="onboarding-step-icon" style="--ob: 139,92,246;"><i class="bi bi-calendar-event"></i></span>
+            <span class="onboarding-step-body">
+                <span class="onboarding-step-title">Register a subscription</span>
+                <span class="onboarding-step-desc">Domains, SSL, SaaS — anything with a renewal date.</span>
+            </span>
+            <i class="bi bi-arrow-right onboarding-step-arrow"></i>
+        </a>
+        <a href="{{ route('mail-settings.edit') }}" class="onboarding-step" data-step="4">
+            <span class="onboarding-step-num">4</span>
+            <span class="onboarding-step-icon" style="--ob: 245,158,11;"><i class="bi bi-envelope-gear"></i></span>
+            <span class="onboarding-step-body">
+                <span class="onboarding-step-title">Configure mail delivery</span>
+                <span class="onboarding-step-desc">Set SMTP credentials and reminder recipients.</span>
+            </span>
+            <i class="bi bi-arrow-right onboarding-step-arrow"></i>
+        </a>
+    </div>
+</section>
+@endif
 <section class="kpi-grid" aria-label="Summary metrics">
     {{-- 1. PC Assets ─ blue ─────────────────────────────────────────── --}}
     <article class="kpi-tile" data-tone="blue">
@@ -389,10 +451,195 @@
     [data-bs-theme="dark"] .kpi-tile[data-tone="purple"] { --kpi-accent-soft: rgba(139,92,246,0.20);  }
     [data-bs-theme="dark"] .kpi-tile[data-tone="alert"]  { --kpi-accent-soft: rgba(245,158,11,0.22);  }
 
+    /* ─── Onboarding card (first-run admin) ──────────────────────────────── */
+    .onboarding-card {
+        position: relative;
+        margin-bottom: 1rem;
+        padding: 1.5rem;
+        background: #fff;
+        border: 1px solid rgba(15, 23, 42, 0.07);
+        border-radius: 1rem;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        overflow: hidden;
+        isolation: isolate;
+    }
+    .onboarding-card::before {
+        content: '';
+        position: absolute;
+        top: -50%; right: -10%;
+        width: 420px; height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle,
+            rgba(91, 108, 255, 0.10) 0%,
+            rgba(139, 92, 246, 0.06) 40%,
+            transparent 70%);
+        z-index: -1;
+        pointer-events: none;
+    }
+    [data-bs-theme="dark"] .onboarding-card {
+        background: rgba(30, 36, 48, 0.72);
+        border-color: rgba(255, 255, 255, 0.06);
+    }
+    [data-bs-theme="dark"] .onboarding-card::before {
+        background: radial-gradient(circle,
+            rgba(91, 108, 255, 0.18) 0%,
+            rgba(139, 92, 246, 0.12) 40%,
+            transparent 70%);
+    }
+
+    .onboarding-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+        flex-wrap: wrap;
+    }
+    .onboarding-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -.015em;
+        margin: 0 0 .35rem;
+        color: #0f172a;
+    }
+    .onboarding-sub {
+        font-size: .85rem;
+        color: #64748b;
+        margin: 0;
+        max-width: 60ch;
+        line-height: 1.55;
+    }
+    [data-bs-theme="dark"] .onboarding-title { color: #f1f5f9; }
+    [data-bs-theme="dark"] .onboarding-sub   { color: #94a3b8; }
+
+    .onboarding-badge {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        padding: .35rem .7rem;
+        font-size: .72rem;
+        font-weight: 600;
+        letter-spacing: .02em;
+        color: #5b6cff;
+        background: rgba(91, 108, 255, 0.10);
+        border: 1px solid rgba(91, 108, 255, 0.18);
+        border-radius: 999px;
+    }
+    [data-bs-theme="dark"] .onboarding-badge {
+        color: #a5b4fc;
+        background: rgba(91, 108, 255, 0.18);
+        border-color: rgba(91, 108, 255, 0.3);
+    }
+
+    .onboarding-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: .75rem;
+    }
+    @media (min-width: 768px)  { .onboarding-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1200px) { .onboarding-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .onboarding-step {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: .85rem;
+        padding: .85rem 1rem;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        border-radius: .75rem;
+        text-decoration: none;
+        color: inherit;
+        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .onboarding-step:hover,
+    .onboarding-step:focus-visible {
+        transform: translateY(-2px);
+        background: #fff;
+        border-color: rgb(var(--ob, 91 108 255) / .35);
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        outline: none;
+    }
+    [data-bs-theme="dark"] .onboarding-step {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.08);
+    }
+    [data-bs-theme="dark"] .onboarding-step:hover,
+    [data-bs-theme="dark"] .onboarding-step:focus-visible {
+        background: rgba(255, 255, 255, 0.07);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .onboarding-step-num {
+        position: absolute;
+        top: -8px; left: -8px;
+        width: 22px; height: 22px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #5b6cff 0%, #8b5cf6 100%);
+        color: #fff;
+        font-size: .68rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(91, 108, 255, 0.35);
+    }
+    .onboarding-step-icon {
+        flex-shrink: 0;
+        width: 38px;
+        height: 38px;
+        border-radius: .55rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        background: rgb(var(--ob, 91 108 255) / .12);
+        color: rgb(var(--ob, 91 108 255));
+        box-shadow: inset 0 0 0 1px rgb(var(--ob, 91 108 255) / .18);
+    }
+    [data-bs-theme="dark"] .onboarding-step-icon {
+        background: rgb(var(--ob, 165 180 252) / .2);
+    }
+    .onboarding-step-body {
+        flex-grow: 1;
+        min-width: 0;
+        line-height: 1.3;
+    }
+    .onboarding-step-title {
+        display: block;
+        font-size: .92rem;
+        font-weight: 600;
+        color: #0f172a;
+        letter-spacing: -.005em;
+    }
+    .onboarding-step-desc {
+        display: block;
+        font-size: .76rem;
+        color: #64748b;
+        margin-top: 2px;
+    }
+    [data-bs-theme="dark"] .onboarding-step-title { color: #f1f5f9; }
+    [data-bs-theme="dark"] .onboarding-step-desc  { color: #94a3b8; }
+    .onboarding-step-arrow {
+        flex-shrink: 0;
+        font-size: .9rem;
+        color: #cbd5e1;
+        transition: transform .18s ease, color .18s ease;
+    }
+    .onboarding-step:hover .onboarding-step-arrow,
+    .onboarding-step:focus-visible .onboarding-step-arrow {
+        transform: translateX(3px);
+        color: rgb(var(--ob, 91 108 255));
+    }
+
     /* ─── Reduced motion ─────────────────────────────────────────────────── */
     @media (prefers-reduced-motion: reduce) {
-        .kpi-tile { transition: none; }
-        .kpi-tile:hover { transform: none; }
+        .kpi-tile,
+        .onboarding-step,
+        .onboarding-step-arrow { transition: none; }
+        .kpi-tile:hover,
+        .onboarding-step:hover { transform: none; }
     }
 </style>
 
