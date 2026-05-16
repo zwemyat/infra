@@ -441,6 +441,7 @@
             container.replaceWith(fresh);
             if (push) history.pushState({ subContent: true }, '', url);
             refreshBulkToolbar();
+            if (window.initTooltips) window.initTooltips(fresh);
         } catch (err) {
             if (overlay) overlay.classList.add('d-none');
             window.location.href = url;

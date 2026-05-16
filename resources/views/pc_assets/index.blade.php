@@ -435,6 +435,7 @@
             if (push) history.pushState({ pcContent: true }, '', url);
             initChart();
             refreshBulkToolbar();
+            if (window.initTooltips) window.initTooltips(fresh);
         } catch (err) {
             if (overlay) overlay.classList.add('d-none');
             window.location.href = url;

@@ -520,6 +520,30 @@
         [data-bs-theme="dark"] .app-breadcrumb-item.is-current span { color: #f1f5f9; }
         [data-bs-theme="dark"] .app-breadcrumb-sep { color: #475569; }
 
+        /* ─── Tooltips ───────────────────────────────────────────────────── */
+        .tooltip {
+            --bs-tooltip-bg: rgba(15, 23, 42, 0.95);
+            --bs-tooltip-color: #f8fafc;
+            --bs-tooltip-opacity: 1;
+            --bs-tooltip-font-size: .75rem;
+            --bs-tooltip-padding-x: .55rem;
+            --bs-tooltip-padding-y: .3rem;
+            --bs-tooltip-border-radius: .4rem;
+            --bs-tooltip-max-width: 240px;
+        }
+        .tooltip .tooltip-inner {
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
+            letter-spacing: .005em;
+            font-weight: 500;
+        }
+        [data-bs-theme="dark"] .tooltip {
+            --bs-tooltip-bg: rgba(241, 245, 249, 0.95);
+            --bs-tooltip-color: #0f172a;
+        }
+        [data-bs-theme="dark"] .tooltip .tooltip-inner {
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+        }
+
         /* Modern dashboard cards */
         .glass-card {
             background: rgba(255, 255, 255, 0.7);
@@ -1304,6 +1328,31 @@
                 });
             }
         })();
+
+        // ─── Bootstrap tooltips ──────────────────────────────────────────
+        // Upgrades every element with a `title` attribute to a Bootstrap
+        // tooltip so they show on keyboard focus (not just mouse hover)
+        // and inherit consistent styling. Skips elements where Bootstrap
+        // tooltips don't make sense (head/option/iframe). Re-invokable
+        // via window.initTooltips(root) after AJAX swaps replace content.
+        window.initTooltips = function (root) {
+            if (typeof bootstrap === 'undefined') return;
+            (root || document)
+                .querySelectorAll('[title]:not(meta):not(title):not(iframe):not(option)')
+                .forEach(function (el) {
+                    var t = el.getAttribute('title');
+                    if (!t) return;
+                    // Skip if already initialized
+                    if (bootstrap.Tooltip.getInstance(el)) return;
+                    new bootstrap.Tooltip(el, {
+                        delay: { show: 350, hide: 80 },
+                        placement: 'auto',
+                        boundary: 'viewport',
+                        container: 'body',
+                    });
+                });
+        };
+        document.addEventListener('DOMContentLoaded', function () { window.initTooltips(); });
     </script>
     @stack('scripts')
 </body>
