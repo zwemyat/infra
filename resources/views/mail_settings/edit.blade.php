@@ -3,6 +3,10 @@
 @section('title', 'Mail Settings')
 
 @section('content')
+@include('partials._breadcrumb', ['items' => [
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'Mail Settings'],
+]])
 <div class="page-header">
     <div>
         <h1 class="page-title">Mail Settings</h1>

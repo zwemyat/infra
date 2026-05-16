@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', $device->item_name)
 @section('content')
+@include('partials._breadcrumb', ['items' => [
+    ['label' => 'Dashboard',     'url' => route('dashboard')],
+    ['label' => 'Device Master', 'url' => route('devices.index')],
+    ['label' => $device->item_name],
+]])
 <div class="page-header">
     <div>
         <h1 class="page-title">{{ $device->item_name }}</h1>
@@ -40,7 +45,7 @@
                     <dd class="col-sm-8">{{ $device->qty }}</dd>
 
                     <dt class="col-sm-4 text-muted">Status</dt>
-                    <dd class="col-sm-8"><span class="badge bg-{{ $statusTone }}-subtle text-{{ $statusTone }}-emphasis">{{ $device->status }}</span></dd>
+                    <dd class="col-sm-8">@include('partials._status_badge', ['status' => $device->status])</dd>
 
                     <dt class="col-sm-4 text-muted">Description</dt>
                     <dd class="col-sm-8" style="white-space: pre-line;">{{ $device->description ?: '—' }}</dd>

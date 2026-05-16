@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Add Device')
 @section('content')
+@include('partials._breadcrumb', ['items' => [
+    ['label' => 'Dashboard',     'url' => route('dashboard')],
+    ['label' => 'Device Master', 'url' => route('devices.index')],
+    ['label' => 'Add Device'],
+]])
 <div class="page-header">
     <div>
         <h1 class="page-title">Add Device</h1>

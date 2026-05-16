@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Add License / Contract')
 @section('content')
+@include('partials._breadcrumb', ['items' => [
+    ['label' => 'Dashboard',          'url' => route('dashboard')],
+    ['label' => 'License & Contract', 'url' => route('licenses-contracts.index')],
+    ['label' => 'Add License / Contract'],
+]])
 <div class="page-header">
     <div>
         <h1 class="page-title">Add License / Contract</h1>

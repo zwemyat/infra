@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Add PC')
 @section('content')
+@include('partials._breadcrumb', ['items' => [
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'PC Master',  'url' => route('pc-assets.index')],
+    ['label' => 'Add PC'],
+]])
 <div class="page-header">
     <div>
         <h1 class="page-title">Add PC Asset</h1>

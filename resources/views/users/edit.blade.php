@@ -2,6 +2,11 @@
 @section('title', 'Edit ' . $user->name)
 @section('content')
 @php $isMe = $user->id === auth()->id(); @endphp
+@include('partials._breadcrumb', ['items' => [
+    ['label' => 'Dashboard',       'url' => route('dashboard')],
+    ['label' => 'User Management', 'url' => route('users.index')],
+    ['label' => 'Edit ' . $user->name],
+]])
 <div class="page-header">
     <div>
         <h1 class="page-title">Edit {{ $user->name }}</h1>

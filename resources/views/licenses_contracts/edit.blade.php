@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Edit ' . $item->software_name)
 @section('content')
+@include('partials._breadcrumb', ['items' => [
+    ['label' => 'Dashboard',          'url' => route('dashboard')],
+    ['label' => 'License & Contract', 'url' => route('licenses-contracts.index')],
+    ['label' => 'Edit ' . $item->software_name],
+]])
 <div class="page-header">
     <div>
         <h1 class="page-title">{{ $item->software_name }}</h1>

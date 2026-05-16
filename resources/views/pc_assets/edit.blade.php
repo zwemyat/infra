@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Edit ' . $asset->computer_id)
 @section('content')
+@include('partials._breadcrumb', ['items' => [
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'PC Master',  'url' => route('pc-assets.index')],
+    ['label' => 'Edit ' . $asset->computer_id],
+]])
 <div class="page-header">
     <div>
         <h1 class="page-title">Edit {{ $asset->computer_id }}</h1>

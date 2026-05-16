@@ -454,6 +454,72 @@
         }
         .content { padding: 1.5rem; }
 
+        /* ─── Breadcrumb ─────────────────────────────────────────────────── */
+        .app-breadcrumb {
+            margin-bottom: .85rem;
+            font-size: .8rem;
+            line-height: 1.4;
+        }
+        .app-breadcrumb-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .35rem;
+            min-width: 0;
+        }
+        .app-breadcrumb-item {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            color: #64748b;
+            min-width: 0;
+        }
+        .app-breadcrumb-item a {
+            color: #64748b;
+            text-decoration: none;
+            border-radius: .25rem;
+            padding: 1px 4px;
+            margin: -1px -4px;
+            transition: color .15s ease, background .15s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+        .app-breadcrumb-item a:hover,
+        .app-breadcrumb-item a:focus-visible {
+            color: #5b6cff;
+            background: rgba(91, 108, 255, 0.08);
+            outline: none;
+        }
+        .app-breadcrumb-item.is-current span {
+            color: #0f172a;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 320px;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+        .app-breadcrumb-sep {
+            font-size: .7rem;
+            color: #cbd5e1;
+            margin: 0 .1rem;
+        }
+        [data-bs-theme="dark"] .app-breadcrumb-item,
+        [data-bs-theme="dark"] .app-breadcrumb-item a { color: #94a3b8; }
+        [data-bs-theme="dark"] .app-breadcrumb-item a:hover,
+        [data-bs-theme="dark"] .app-breadcrumb-item a:focus-visible {
+            color: #c4b5fd;
+            background: rgba(139, 92, 246, 0.12);
+        }
+        [data-bs-theme="dark"] .app-breadcrumb-item.is-current span { color: #f1f5f9; }
+        [data-bs-theme="dark"] .app-breadcrumb-sep { color: #475569; }
+
         /* Modern dashboard cards */
         .glass-card {
             background: rgba(255, 255, 255, 0.7);

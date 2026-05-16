@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Add User')
 @section('content')
+@include('partials._breadcrumb', ['items' => [
+    ['label' => 'Dashboard',       'url' => route('dashboard')],
+    ['label' => 'User Management', 'url' => route('users.index')],
+    ['label' => 'Add User'],
+]])
 <div class="page-header">
     <div>
         <h1 class="page-title">Add User</h1>

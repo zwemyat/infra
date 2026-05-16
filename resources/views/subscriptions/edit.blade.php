@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Edit ' . $subscription->subscription_name)
 @section('content')
+@include('partials._breadcrumb', ['items' => [
+    ['label' => 'Dashboard',     'url' => route('dashboard')],
+    ['label' => 'Subscriptions', 'url' => route('subscriptions.index')],
+    ['label' => 'Edit ' . $subscription->subscription_name],
+]])
 <div class="page-header">
     <div>
         <h1 class="page-title">{{ $subscription->subscription_name }}</h1>

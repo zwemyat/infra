@@ -20,6 +20,10 @@
     if (! array_key_exists($activeTab, $modules)) $activeTab = 'subscriptions';
 @endphp
 
+@include('partials._breadcrumb', ['items' => [
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'Notification Settings'],
+]])
 <div class="page-header">
     <div>
         <h1 class="page-title">Notification Settings</h1>
