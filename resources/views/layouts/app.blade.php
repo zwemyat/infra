@@ -469,49 +469,6 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
 
-        .kpi-card {
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(31, 38, 135, 0.08);
-            border-radius: 0.85rem;
-            background: #fff;
-            color: #1f2d3d;
-            transition: transform .15s ease, box-shadow .15s ease;
-            box-shadow: 0 1px 3px rgba(31, 38, 135, 0.04);
-        }
-        .kpi-card::before {
-            content: '';
-            position: absolute;
-            inset: 0 auto 0 0;
-            width: 3px;
-            background: var(--kpi-accent, #0d6efd);
-        }
-        .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(31, 38, 135, 0.08); }
-        .kpi-card .kpi-icon {
-            position: absolute;
-            top: 50%;
-            right: 12px;
-            transform: translateY(-50%);
-            font-size: 2.25rem;
-            opacity: 0.18;
-            line-height: 1;
-            color: var(--kpi-accent, #0d6efd);
-        }
-        .kpi-card .kpi-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: #6c757d; font-weight: 600; }
-        .kpi-card .kpi-value { font-size: 1.85rem; font-weight: 700; line-height: 1.15; color: #1f2d3d; margin-top: .25rem; }
-        .kpi-card .kpi-foot  { font-size: 0.78rem; color: #6c757d; margin-top: .35rem; }
-        .kpi-card a, .kpi-card a:hover { color: inherit; text-decoration: none; }
-        [data-bs-theme="dark"] .kpi-card { background: rgba(30, 36, 48, 0.7); border-color: rgba(255, 255, 255, 0.06); color: #e9ecef; }
-        [data-bs-theme="dark"] .kpi-card .kpi-value { color: #f1f5f9; }
-        [data-bs-theme="dark"] .kpi-card .kpi-label,
-        [data-bs-theme="dark"] .kpi-card .kpi-foot { color: #94a3b8; }
-
-        .kpi-blue   { --kpi-accent: #0d6efd; }
-        .kpi-green  { --kpi-accent: #10b981; }
-        .kpi-amber  { --kpi-accent: #f59e0b; }
-        .kpi-purple { --kpi-accent: #8b5cf6; }
-        .kpi-rose   { --kpi-accent: #f43f5e; }
-
         .activity-dot {
             width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
             margin-top: 6px;
