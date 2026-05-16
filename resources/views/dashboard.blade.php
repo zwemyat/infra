@@ -32,10 +32,26 @@
 
 @php
     $activeServices = (int) $stats['active_subscriptions'] + (int) $stats['active_licenses'];
+
+    // KPI tile destinations — gated by per-module access so the overlay link only
+    // renders for users who can actually open the target view.
+    $pcLink     = $user->canAccess('pc_assets')     ? route('pc-assets.index') : null;
+    $devLink    = $user->canAccess('devices')       ? route('devices.index')   : null;
+    $subsLink   = $user->canAccess('subscriptions')
+                    ? route('subscriptions.index')
+                    : ($user->canAccess('licenses_contracts') ? route('licenses-contracts.index') : null);
+    $expireLink = $user->canAccess('subscriptions')
+                    ? route('subscriptions.index',       ['expiring_soon' => 1])
+                    : ($user->canAccess('licenses_contracts')
+                        ? route('licenses-contracts.index', ['expiring_soon' => 1])
+                        : null);
 @endphp
 <section class="kpi-grid" aria-label="Summary metrics">
     {{-- 1. PC Assets ─ blue ─────────────────────────────────────────── --}}
     <article class="kpi-tile" data-tone="blue">
+        @if($pcLink)
+            <a href="{{ $pcLink }}" class="kpi-tile-link" aria-label="View all PC assets"></a>
+        @endif
         <header class="kpi-tile-head">
             <span class="kpi-tile-icon"><i class="bi bi-pc-display"></i></span>
             <div class="kpi-tile-titles">
@@ -63,6 +79,9 @@
 
     {{-- 2. Devices ─ blue (assets family) ───────────────────────────── --}}
     <article class="kpi-tile" data-tone="blue">
+        @if($devLink)
+            <a href="{{ $devLink }}" class="kpi-tile-link" aria-label="View all devices"></a>
+        @endif
         <header class="kpi-tile-head">
             <span class="kpi-tile-icon"><i class="bi bi-hdd-network"></i></span>
             <div class="kpi-tile-titles">
@@ -90,6 +109,9 @@
 
     {{-- 3. Subscriptions & Licenses ─ purple ────────────────────────── --}}
     <article class="kpi-tile" data-tone="purple">
+        @if($subsLink)
+            <a href="{{ $subsLink }}" class="kpi-tile-link" aria-label="View active subscriptions and licenses"></a>
+        @endif
         <header class="kpi-tile-head">
             <span class="kpi-tile-icon"><i class="bi bi-stars"></i></span>
             <div class="kpi-tile-titles">
@@ -117,6 +139,9 @@
 
     {{-- 4. Expiring Soon ─ amber/red ────────────────────────────────── --}}
     <article class="kpi-tile" data-tone="alert">
+        @if($expireLink)
+            <a href="{{ $expireLink }}" class="kpi-tile-link" aria-label="View items expiring within 30 days"></a>
+        @endif
         <header class="kpi-tile-head">
             <span class="kpi-tile-icon"><i class="bi bi-exclamation-triangle-fill"></i></span>
             <div class="kpi-tile-titles">
@@ -193,6 +218,34 @@
         transform: translateY(-2px);
         box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
         border-color: rgba(15, 23, 42, 0.12);
+    }
+
+    /* Stretched overlay link — makes the entire tile clickable when the user
+       has access to the target module. Renders invisibly above the tile content. */
+    .kpi-tile-link {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        border-radius: inherit;
+        cursor: pointer;
+        text-decoration: none;
+        /* Keyboard focus ring sits flush around the tile */
+    }
+    .kpi-tile-link:focus { outline: none; }
+    .kpi-tile-link:focus-visible {
+        outline: 2px solid var(--kpi-accent, #3b82f6);
+        outline-offset: 3px;
+        border-radius: calc(.95rem + 3px);
+    }
+    /* Lift slightly more on hover/focus when interactive */
+    .kpi-tile:has(.kpi-tile-link:hover),
+    .kpi-tile:has(.kpi-tile-link:focus-visible) {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.10);
+    }
+    [data-bs-theme="dark"] .kpi-tile:has(.kpi-tile-link:hover),
+    [data-bs-theme="dark"] .kpi-tile:has(.kpi-tile-link:focus-visible) {
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
     }
     [data-bs-theme="dark"] .kpi-tile {
         background: rgba(30, 36, 48, 0.72);
