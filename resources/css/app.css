@@ -1,3 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/*
+ * App stylesheet (Vite entry).
+ *
+ * The UI loads Bootstrap 5 + Bootstrap Icons from a CDN in
+ * resources/views/layouts/app.blade.php, and component-level CSS lives
+ * inline in that layout and in individual Blade views. This file is
+ * intentionally near-empty so Vite has an entry it can compile, but no
+ * Tailwind / global styles are layered here.
+ *
+ * Add globals here if you reintroduce a build-time stylesheet.
+ */
